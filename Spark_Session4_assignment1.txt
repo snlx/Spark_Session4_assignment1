@@ -1,0 +1,22 @@
+1. Find the average of numbers.
+Initialize the base RDD with a list of 1,2,3,4,5,6,7,8,9,10
+
+val input = sc.parallelize(List(1,2,3,4,5,6,7,8,9,10))
+val avg=((input.collect.foldLeft(0)(_+_)).toDouble/(input.collect.size).toDouble)
+avg: Double = 5.5
+
+2. Find the average of numbers.
+Read the numbers from a file, each number in separate line. 1,2,3,4,5,6,7,8,9,10
+
+import org.apache.spark.{SparkConf,SparkContext}
+object ScalaDemo{
+  def main(args : Array[String]){
+    val sparkConf= new SparkConf().setAppName("Average").setMaster("local")
+    val sparkContext= new SparkContext(sparkConf)
+    val input = sparkContext.textFile("resources/averageFromFile.txt")
+    val sum=input.map(_.toInt).reduce((x,y) => {
+      x+y
+    })/ input.count().toDouble
+    println("result is : "+ sum)
+  }
+}
